@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.5
 // 	protoc        v5.29.3
-// source: pay-gprc.proto
+// source: api/v1/pay_grpc/pay-gprc.proto
 
-package paygrpc
+package v1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -29,7 +29,7 @@ type TestRequest struct {
 
 func (x *TestRequest) Reset() {
 	*x = TestRequest{}
-	mi := &file_pay_gprc_proto_msgTypes[0]
+	mi := &file_api_v1_pay_grpc_pay_gprc_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -41,7 +41,7 @@ func (x *TestRequest) String() string {
 func (*TestRequest) ProtoMessage() {}
 
 func (x *TestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pay_gprc_proto_msgTypes[0]
+	mi := &file_api_v1_pay_grpc_pay_gprc_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -54,7 +54,7 @@ func (x *TestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestRequest.ProtoReflect.Descriptor instead.
 func (*TestRequest) Descriptor() ([]byte, []int) {
-	return file_pay_gprc_proto_rawDescGZIP(), []int{0}
+	return file_api_v1_pay_grpc_pay_gprc_proto_rawDescGZIP(), []int{0}
 }
 
 type TestResponse struct {
@@ -66,7 +66,7 @@ type TestResponse struct {
 
 func (x *TestResponse) Reset() {
 	*x = TestResponse{}
-	mi := &file_pay_gprc_proto_msgTypes[1]
+	mi := &file_api_v1_pay_grpc_pay_gprc_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -78,7 +78,7 @@ func (x *TestResponse) String() string {
 func (*TestResponse) ProtoMessage() {}
 
 func (x *TestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pay_gprc_proto_msgTypes[1]
+	mi := &file_api_v1_pay_grpc_pay_gprc_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -91,7 +91,7 @@ func (x *TestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestResponse.ProtoReflect.Descriptor instead.
 func (*TestResponse) Descriptor() ([]byte, []int) {
-	return file_pay_gprc_proto_rawDescGZIP(), []int{1}
+	return file_api_v1_pay_grpc_pay_gprc_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *TestResponse) GetMessage() string {
@@ -101,10 +101,11 @@ func (x *TestResponse) GetMessage() string {
 	return ""
 }
 
-var File_pay_gprc_proto protoreflect.FileDescriptor
+var File_api_v1_pay_grpc_pay_gprc_proto protoreflect.FileDescriptor
 
-var file_pay_gprc_proto_rawDesc = string([]byte{
-	0x0a, 0x0e, 0x70, 0x61, 0x79, 0x2d, 0x67, 0x70, 0x72, 0x63, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+var file_api_v1_pay_grpc_pay_gprc_proto_rawDesc = string([]byte{
+	0x0a, 0x1e, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x70, 0x61, 0x79, 0x5f, 0x67, 0x72, 0x70,
+	0x63, 0x2f, 0x70, 0x61, 0x79, 0x2d, 0x67, 0x70, 0x72, 0x63, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x12, 0x08, 0x70, 0x61, 0x79, 0x5f, 0x67, 0x72, 0x70, 0x63, 0x22, 0x0d, 0x0a, 0x0b, 0x54, 0x65,
 	0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x28, 0x0a, 0x0c, 0x54, 0x65, 0x73,
 	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73,
@@ -113,32 +114,28 @@ var file_pay_gprc_proto_rawDesc = string([]byte{
 	0x65, 0x12, 0x35, 0x0a, 0x04, 0x54, 0x65, 0x73, 0x74, 0x12, 0x15, 0x2e, 0x70, 0x61, 0x79, 0x5f,
 	0x67, 0x72, 0x70, 0x63, 0x2e, 0x54, 0x65, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x1a, 0x16, 0x2e, 0x70, 0x61, 0x79, 0x5f, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x54, 0x65, 0x73, 0x74,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x46, 0x5a, 0x44, 0x67, 0x69, 0x74, 0x68,
-	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6d, 0x6f, 0x6c, 0x6f, 0x64, 0x6f, 0x79, 0x6d, 0x61,
-	0x78, 0x69, 0x6d, 0x2f, 0x6a, 0x61, 0x65, 0x67, 0x65, 0x72, 0x5f, 0x74, 0x65, 0x73, 0x74, 0x2f,
-	0x70, 0x61, 0x79, 0x5f, 0x67, 0x72, 0x70, 0x63, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f,
-	0x70, 0x61, 0x79, 0x5f, 0x67, 0x72, 0x70, 0x63, 0x3b, 0x70, 0x61, 0x79, 0x67, 0x72, 0x70, 0x63,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x0d, 0x5a, 0x0b, 0x70, 0x61, 0x79, 0x5f,
+	0x67, 0x72, 0x70, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 })
 
 var (
-	file_pay_gprc_proto_rawDescOnce sync.Once
-	file_pay_gprc_proto_rawDescData []byte
+	file_api_v1_pay_grpc_pay_gprc_proto_rawDescOnce sync.Once
+	file_api_v1_pay_grpc_pay_gprc_proto_rawDescData []byte
 )
 
-func file_pay_gprc_proto_rawDescGZIP() []byte {
-	file_pay_gprc_proto_rawDescOnce.Do(func() {
-		file_pay_gprc_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_pay_gprc_proto_rawDesc), len(file_pay_gprc_proto_rawDesc)))
+func file_api_v1_pay_grpc_pay_gprc_proto_rawDescGZIP() []byte {
+	file_api_v1_pay_grpc_pay_gprc_proto_rawDescOnce.Do(func() {
+		file_api_v1_pay_grpc_pay_gprc_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_v1_pay_grpc_pay_gprc_proto_rawDesc), len(file_api_v1_pay_grpc_pay_gprc_proto_rawDesc)))
 	})
-	return file_pay_gprc_proto_rawDescData
+	return file_api_v1_pay_grpc_pay_gprc_proto_rawDescData
 }
 
-var file_pay_gprc_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_pay_gprc_proto_goTypes = []any{
+var file_api_v1_pay_grpc_pay_gprc_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_v1_pay_grpc_pay_gprc_proto_goTypes = []any{
 	(*TestRequest)(nil),  // 0: pay_grpc.TestRequest
 	(*TestResponse)(nil), // 1: pay_grpc.TestResponse
 }
-var file_pay_gprc_proto_depIdxs = []int32{
+var file_api_v1_pay_grpc_pay_gprc_proto_depIdxs = []int32{
 	0, // 0: pay_grpc.PayService.Test:input_type -> pay_grpc.TestRequest
 	1, // 1: pay_grpc.PayService.Test:output_type -> pay_grpc.TestResponse
 	1, // [1:2] is the sub-list for method output_type
@@ -148,26 +145,26 @@ var file_pay_gprc_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_pay_gprc_proto_init() }
-func file_pay_gprc_proto_init() {
-	if File_pay_gprc_proto != nil {
+func init() { file_api_v1_pay_grpc_pay_gprc_proto_init() }
+func file_api_v1_pay_grpc_pay_gprc_proto_init() {
+	if File_api_v1_pay_grpc_pay_gprc_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pay_gprc_proto_rawDesc), len(file_pay_gprc_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_v1_pay_grpc_pay_gprc_proto_rawDesc), len(file_api_v1_pay_grpc_pay_gprc_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_pay_gprc_proto_goTypes,
-		DependencyIndexes: file_pay_gprc_proto_depIdxs,
-		MessageInfos:      file_pay_gprc_proto_msgTypes,
+		GoTypes:           file_api_v1_pay_grpc_pay_gprc_proto_goTypes,
+		DependencyIndexes: file_api_v1_pay_grpc_pay_gprc_proto_depIdxs,
+		MessageInfos:      file_api_v1_pay_grpc_pay_gprc_proto_msgTypes,
 	}.Build()
-	File_pay_gprc_proto = out.File
-	file_pay_gprc_proto_goTypes = nil
-	file_pay_gprc_proto_depIdxs = nil
+	File_api_v1_pay_grpc_pay_gprc_proto = out.File
+	file_api_v1_pay_grpc_pay_gprc_proto_goTypes = nil
+	file_api_v1_pay_grpc_pay_gprc_proto_depIdxs = nil
 }

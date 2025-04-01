@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/molodoymaxim/jaeger_test/pay_grpc/api/v1/pay_grpc;paygrpc";
+option go_package = "pay_grpc/v1";
 
 package pay_grpc;
 

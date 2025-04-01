@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.29.3
-// source: pay-gprc.proto
+// source: api/v1/pay_grpc/pay-gprc.proto
 
-package paygrpc
+package v1
 
 import (
 	context "context"
@@ -117,5 +117,5 @@ var PayService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "pay-gprc.proto",
+	Metadata: "api/v1/pay_grpc/pay-gprc.proto",
 }
