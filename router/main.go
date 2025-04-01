@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"log"
 	"net/http"
 	"router/middleware"
@@ -12,6 +14,8 @@ import (
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
+
+	pb "github.com/molodoymaxim/jaeger_test/pay_grpc/pkg/pay_grpc/v1"
 )
 
 func main() {
@@ -54,47 +58,47 @@ func main() {
 		c.String(http.StatusOK, "test end")
 	})
 
+	r.GET("/testgrpc", func(c *gin.Context) {
+		ctx := c.Request.Context()
+		err := callPayGRPC(ctx)
+		if err != nil {
+			c.String(http.StatusInternalServerError, "failed to call pay_grpc: %v", err)
+			return
+		}
+		c.String(http.StatusOK, "test grpc end")
+	})
+
 	log.Println("router is running on :8081")
 	if err := r.Run(":8081"); err != nil {
 		log.Fatalf("Failed to start router: %v", err)
 	}
 
-	// Для примера запускаем HTTP-сервер на порту 8080
-	//mux := http.NewServeMux()
-	//mux.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
-	//	w.Write([]byte("router pong"))
-	//})
+	log.Println("router is running on :8081")
+	if err := r.Run(":8081"); err != nil {
+		log.Fatalf("Failed to start router: %v", err)
+	}
+}
 
-	// Эндпоинт /test — простая ручка, из которой мы вызываем queryToParserWithContextService
-	//testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	//	ctx := r.Context()
-	//
-	//	// Пример: время обработки
-	//	time.Sleep(500 * time.Millisecond)
-	//
-	//	// Вызываем нашу функцию, которая сделает запрос к pay
-	//	err := queryToParserWithContextService(
-	//		ctx,
-	//		"GET",
-	//		"/pay/test", // endpoint у pay
-	//		map[string]string{
-	//			"cache-control": "no-cache",
-	//			"Content-Type":  "application/json",
-	//		},
-	//		nil,
-	//	)
-	//	if err != nil {
-	//		http.Error(w, "failed to call pay: "+err.Error(), http.StatusInternalServerError)
-	//		return
-	//	}
-	//
-	//	w.Write([]byte("test end"))
-	//})
+func callPayGRPC(ctx context.Context) error {
+	conn, err := grpc.Dial("pay-grpc:9091", grpc.WithInsecure())
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
 
-	//log.Println("router is running on :8081")
-	//if err := http.ListenAndServe(":8081", mux); err != nil {
-	//	log.Fatalf("Failed to start router: %v", err)
-	//}
+	client := pb.NewPayServiceClient(conn)
+
+	// Инжектируем trace-контекст в grpc.Metadata.
+	md := metadata.New(nil)
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(md))
+	outCtx := metadata.NewOutgoingContext(ctx, md)
+
+	resp, err := client.Test(outCtx, &pb.TestRequest{})
+	if err != nil {
+		return err
+	}
+	log.Printf("pay_grpc response: %s", resp.Message)
+	return nil
 }
 
 // queryToParserWithContextService делает HTTP-запрос к сервису pay
@@ -133,47 +137,3 @@ func queryToParserWithContextService(ctx context.Context, method string, endpoin
 	log.Printf("Pay response status: %s", resp.Status)
 	return nil
 }
-
-// initTracerProvider настраивает экспорт трейсов в Jaeger
-//func initTracerProvider() *sdktrace.TracerProvider {
-//	endpoint := os.Getenv("OTEL_EXPORTER_JAEGER_ENDPOINT")
-//	if endpoint == "" {
-//		endpoint = "http://localhost:14268/api/traces"
-//	}
-//
-//	exp, err := jaeger.New(
-//		jaeger.WithCollectorEndpoint(
-//			jaeger.WithEndpoint(endpoint),
-//		),
-//	)
-//	if err != nil {
-//		log.Fatalf("failed to create jaeger exporter: %v", err)
-//	}
-//
-//	serviceName := os.Getenv("OTEL_SERVICE_NAME")
-//	if serviceName == "" {
-//		serviceName = "router"
-//	}
-//
-//	r, err := resource.New(
-//		context.Background(),
-//		resource.WithAttributes(
-//			semconv.ServiceNameKey.String(serviceName),
-//		),
-//	)
-//	if err != nil {
-//		log.Fatalf("failed to create resource: %v", err)
-//	}
-//
-//	tp := sdktrace.NewTracerProvider(
-//		sdktrace.WithBatcher(exp),
-//		sdktrace.WithResource(r),
-//	)
-//	// Регистрируем провайдер как глобальный
-//	otel.SetTracerProvider(tp)
-//
-//	// Настраиваем пропагацию (прокидку) контекста трейсинга через HTTP-заголовки
-//	otel.SetTextMapPropagator(propagation.TraceContext{})
-//
-//	return tp
-//}

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
