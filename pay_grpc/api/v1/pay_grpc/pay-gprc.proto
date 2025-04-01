@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+option go_package = "github.com/molodoymaxim/jaeger_test/pay_grpc/api/v1/pay_grpc;paygrpc";
+
 package pay_grpc;
 
 service PayService {
