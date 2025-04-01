@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pay_grpc;
+
+service PayService {
+  rpc Test(TestRequest) returns (TestResponse);
+}
+
+message TestRequest {}
+
+message TestResponse {
+  string message = 1;
+}
+
