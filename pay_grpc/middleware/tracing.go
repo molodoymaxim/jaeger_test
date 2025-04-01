@@ -1,44 +1,41 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
+	"google.golang.org/grpc"
 	"log"
 )
 
-func CreateTracerAndSpan(operationName, traceName string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		tracer := otel.Tracer(traceName)
-
-		// Start попробует извлечь родительский спанКонтекст и если родителя не будет, то создаст новый
-		ctx, span := tracer.Start(c.Request.Context(), operationName)
+// CreateTracerAndSpan создает (или продолжает) трейс и добавляет базовый спан в gRPC‑контекст.
+// Используйте этот interceptor для серверных вызовов, чтобы новый спан оборачивал вызов метода.
+func CreateTracerAndSpan(operationName, tracerName string) grpc.UnaryServerInterceptor {
+	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		tracer := otel.Tracer(tracerName)
+		newCtx, span := tracer.Start(ctx, operationName)
+		// span.End() вызовется после завершения обработки запроса
 		defer span.End()
 
-		c.Request = c.Request.WithContext(ctx)
-
-		c.Next()
+		// Вызываем следующий обработчик с обновленным контекстом
+		return handler(newCtx, req)
 	}
 }
 
-func CreateSpanByParent(spanName, tracerName string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-
-		// Получаем родительский спан из текущего контекста.
-		parentSpan := trace.SpanFromContext(c.Request.Context())
+// CreateSpanByParent создает дочерний спан, используя родительский спан из gRPC‑контекста.
+// Если родительский спан не найден, просто продолжает обработку без создания нового спана.
+func CreateSpanByParent(spanName, tracerName string) grpc.UnaryServerInterceptor {
+	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		// Извлекаем родительский спан из входящего контекста.
+		parentSpan := trace.SpanFromContext(ctx)
 		if !parentSpan.SpanContext().IsValid() {
 			log.Println("Не найден валидный родительский спан в контексте")
-			c.Next()
-			return
+			return handler(ctx, req)
 		}
 
-		// Используем стандартный метод для создания дочернего спана.
 		tracer := otel.Tracer(tracerName)
-		ctx, span := tracer.Start(c.Request.Context(), spanName)
+		newCtx, span := tracer.Start(ctx, spanName)
 		defer span.End()
 
-		// Обновляем контекст запроса.
-		c.Request = c.Request.WithContext(ctx)
-		c.Next()
+		return handler(newCtx, req)
 	}
 }

@@ -12,6 +12,7 @@ import (
 	"go.opentelemetry.io/otel/propagation"
 	"google.golang.org/grpc"
 
+	pb "github.com/molodoymaxim/jaeger_test/pay_grpc/api/v1/pay_grpc"
 	"pay_grpc/pkg/tracing" // Общий пакет для инициализации tracer provider
 )
 
